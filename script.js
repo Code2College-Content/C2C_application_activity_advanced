@@ -59,6 +59,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const result = number % 2 === 0 ? 'Even' : 'Odd';
         oddEvenResult.textContent = result;
         outputText2.textContent = result;
+        
+        // Update the print block text if it exists in the DOM
+        const printBlock = document.querySelector('.code-block[data-order="6"]');
+        if (printBlock) {
+            // Get the div inside the code block if it exists
+            const contentDiv = printBlock.querySelector('div');
+            
+            // Create new formatted text
+            const newContent = `# Print the result\nresult = is_even(${number})\nprint(result)`;
+            
+            if (contentDiv) {
+                // Clear existing content
+                contentDiv.innerHTML = '';
+                
+                // Add new content with line breaks
+                newContent.split('\n').forEach((line, index, array) => {
+                    contentDiv.appendChild(document.createTextNode(line));
+                    if (index < array.length - 1) {
+                        contentDiv.appendChild(document.createElement('br'));
+                    }
+                });
+            }
+        }
     });
     
     // Challenge data
@@ -78,7 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 { text: '    if n % 2 == 0:', order: 2, explanation: 'This line checks if n is divisible by 2 with no remainder. The % symbol is the modulo operator that gives the remainder after division. If n % 2 equals 0, then n is an even number.' },
                 { text: '        return "Even"', order: 3, explanation: 'This line returns the string "Even" if the condition above is true (if n is divisible by 2). The indentation is important in Python to indicate this line belongs to the if statement.' },
                 { text: '    else:', order: 4, explanation: 'This line indicates what to do if the condition in the if statement is false (if n is not divisible by 2). In Python, the "else" keyword must be aligned with the "if" statement it belongs to.' },
-                { text: '        return "Odd"', order: 5, explanation: 'This line returns the string "Odd" if the number is not even. The indentation shows this line belongs to the else statement.' }
+                { text: '        return "Odd"', order: 5, explanation: 'This line returns the string "Odd" if the number is not even. The indentation shows this line belongs to the else statement.' },
+                { text: '# Print the result\nresult = is_even(42)\nprint(result)', order: 6, explanation: 'These lines show how to use the is_even() function. First, we call the function with a number and store the result in a variable. Then, we print that result to see it on the screen.' }
             ]
         }
     ];
@@ -185,8 +209,21 @@ document.addEventListener('DOMContentLoaded', function() {
         blockElement.dataset.order = block.order;
         blockElement.dataset.explanation = block.explanation;
         
-        // Add indentation to the display text if needed
-        blockElement.textContent = block.text;
+        // Handle newlines in text content properly
+        if (block.text.includes('\n')) {
+            // Replace newlines with <br> tags for proper display
+            const formattedText = document.createElement('div');
+            block.text.split('\n').forEach((line, index, array) => {
+                formattedText.appendChild(document.createTextNode(line));
+                if (index < array.length - 1) {
+                    formattedText.appendChild(document.createElement('br'));
+                }
+            });
+            blockElement.appendChild(formattedText);
+        } else {
+            // No newlines, just set text content
+            blockElement.textContent = block.text;
+        }
         
         // Add info icon
         const infoIcon = document.createElement('span');
@@ -395,6 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h5>Function Overview:</h5>
                 <p>This <code>is_even()</code> function determines if a number is even or odd. When you call <code>is_even(4)</code>, it returns <code>"Even"</code>, and when you call <code>is_even(7)</code>, it returns <code>"Odd"</code>.</p>
                 <p>This function demonstrates conditional logic (if/else statements) and the modulo operator (%) which finds the remainder after division.</p>
+                <p>Unlike the <code>greet()</code> function, this function returns a value instead of printing it directly. This allows the result to be stored in a variable first, which we can then print or use elsewhere in our code as shown in the example.</p>
             `;
         }
         
