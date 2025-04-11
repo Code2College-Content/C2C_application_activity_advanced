@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code2College - Coding Challenge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="fw-bold">Code2College</span>
+            </a>
+            <div class="ms-auto d-flex align-items-center">
+                <div class="hint-counter me-3">
+                    <span class="badge bg-info">Hints used: <span id="hintCount">0</span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h1 class="h4 mb-0">Coding Challenge: Function Arrangement</h1>
+                    </div>
+                    <div class="card-body">
+                        <div id="instructions" class="mb-4">
+                            <h2 class="h5">Instructions:</h2>
+                            <p>Drag and drop the code blocks into the correct order to create a working function. Once you've arranged the blocks, click "Check My Answer" to see if you're correct!</p>
+                            
+                            <div class="hint-section mb-3">
+                                <button class="btn btn-outline-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#codingHints" aria-expanded="false" aria-controls="codingHints">
+                                    <i class="fas fa-lightbulb me-1"></i> Show Coding Hints
+                                </button>
+                                <div class="collapse mt-2" id="codingHints">
+                                    <div class="card card-body">
+                                        <h5 class="h6">Helpful Coding Terms:</h5>
+                                        <ul class="hint-list">
+                                            <li>
+                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="variable">variables</button>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="def">def</button>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="return">return</button>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="if-else">if/else statements</button>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="indentation">indentation</button>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="modulo">modulo operator (%)</button>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="print">print</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenges">
+                            <!-- Challenge 1 -->
+                            <div id="challenge1" class="challenge active">
+                                <div class="challenge-header">
+                                    <h3 class="h5">Challenge 1: Create a greeting function</h3>
+                                    <div class="variable-explanation mb-3 p-3 bg-light rounded">
+                                        <h4 class="h6">What is a variable?</h4>
+                                        <p>A <strong>variable</strong> is a container that stores information in your code. Think of it like a labeled box that holds a value you can use later.</p>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">your_name = </span>
+                                            <input type="text" id="nameInput" class="form-control name-placeholder" placeholder="Enter your name" value="Enter Name Here">
+                                        </div>
+                                        <p class="small text-muted mb-0">Try changing the variable above to your own name</p>
+                                    </div>
+                                    <p>Function: <code>greet(name)</code> should print a greeting like "<span id="greetingExample">Hello, <i class="text-secondary">Enter Name Here</i>!</span>"</p>
+                                </div>
+                                
+                                <div class="code-container">
+                                    <div class="code-blocks-container">
+                                        <h4 class="h6">Code Blocks:</h4>
+                                        <div id="blockContainer1" class="block-container">
+                                            <!-- Code blocks will be added here by JavaScript -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="solution-container">
+                                        <h4 class="h6">Your Solution:</h4>
+                                        <div id="solutionContainer1" class="solution-blocks">
+                                            <!-- Blocks will be dropped here -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <button id="checkBtn1" class="btn btn-primary">Check My Answer</button>
+                                    <button id="resetBtn1" class="btn btn-secondary">Reset</button>
+                                </div>
+                                
+                                <div id="feedback1" class="feedback mt-3"></div>
+
+                                <div class="output-display mt-4 p-3 bg-dark text-light rounded" style="display: none;">
+                                    <h4 class="h6 text-light">Output:</h4>
+                                    <pre class="mb-0"><code id="outputText">Hello, Enter Name Here!</code></pre>
+                                </div>
+                                
+                                <div id="explanation1" class="explanation mt-4" style="display: none;">
+                                    <h4 class="h6">Explanation:</h4>
+                                    <div class="explanation-content">
+                                        <!-- Explanation content will be added by JavaScript -->
+                                    </div>
+                                </div>
+                        
+                                
+                                <div class="mt-4 text-end">
+                                    <button id="nextBtn1" class="btn btn-success" disabled>Next Challenge &rarr;</button>
+                                </div>
+                            </div>
+
+                            <!-- Challenge 2 -->
+                            <div id="challenge2" class="challenge">
+                                <div class="challenge-header">
+                                    <h3 class="h5">Challenge 2: Check if a number is even or odd</h3>
+                                    <div class="variable-explanation mb-3 p-3 bg-light rounded">
+                                        <h4 class="h6">Test with a Number:</h4>
+                                        <p>Let's test your <code>is_even()</code> function with different numbers.</p>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">test_number = </span>
+                                            <input type="number" id="numberInput" class="form-control" placeholder="Enter a number" value="42">
+                                        </div>
+                                        <p class="small text-muted mb-0">Try changing the number to see if it's even or odd</p>
+                                    </div>
+                                    <p>Function: <code>is_even(n)</code> should return "<span id="oddEvenResult">Even</span>" if the number is even, "Odd" otherwise</p>
+                                </div>
+                                
+                                <div class="code-container">
+                                    <div class="code-blocks-container">
+                                        <h4 class="h6">Code Blocks:</h4>
+                                        <div id="blockContainer2" class="block-container">
+                                            <!-- Code blocks will be added here by JavaScript -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="solution-container">
+                                        <h4 class="h6">Your Solution:</h4>
+                                        <div id="solutionContainer2" class="solution-blocks">
+                                            <!-- Blocks will be dropped here -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <button id="checkBtn2" class="btn btn-primary">Check My Answer</button>
+                                    <button id="resetBtn2" class="btn btn-secondary">Reset</button>
+                                </div>
+                                
+                                <div id="feedback2" class="feedback mt-3"></div>
+
+                                <div class="output-display mt-4 p-3 bg-dark text-light rounded" id="outputDisplay2" style="display: none;">
+                                    <h4 class="h6 text-light">Output:</h4>
+                                    <pre class="mb-0"><code id="outputText2">Even</code></pre>
+                                </div>
+                                
+                                <div id="explanation2" class="explanation mt-4" style="display: none;">
+                                    <h4 class="h6">Explanation:</h4>
+                                    <div class="explanation-content">
+                                        <!-- Explanation content will be added by JavaScript -->
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 d-flex justify-content-between">
+                                    <button id="prevBtn2" class="btn btn-outline-secondary">&larr; Previous Challenge</button>
+                                    <button id="completeBtn" class="btn btn-success">Complete Challenge</button>
+                                </div>
+                            </div>
+
+                            <!-- Completion Screen -->
+                            <div id="completion" class="challenge">
+                                <div class="text-center py-5">
+                                    <div class="completion-icon mb-4">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <h2 class="h4">Congratulations!</h2>
+                                    <p class="lead">You've successfully completed the Code2College coding challenge.</p>
+                                    <div class="stats-container mb-4">
+                                        <p>You used <span id="finalHintCount" class="fw-bold text-info">0</span> hints to complete this challenge.</p>
+                                    </div>
+                                    <p>Thank you for participating. Your results have been submitted.</p>
+                                    <div class="mt-4">
+                                        <button id="restartBtn" class="btn btn-primary">Try Again</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Term Definition Modal -->
+    <div class="modal fade" id="termModal" tabindex="-1" aria-labelledby="termModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="termModalLabel">Coding Term</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="termTitle" class="h5 mb-3"></h4>
+                    <div id="termDefinition"></div>
+                    <div id="termExample" class="bg-light p-3 mt-3 rounded code-example"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
