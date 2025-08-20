@@ -1,309 +1,297 @@
+/* styles.css — Code2College — Function Arrangement: Intermediate
+   Fresh look, strong contrast, and clear drag-and-drop affordances.
+   Works with Bootstrap 5 and SortableJS.
+*/
+
+/* -----------------------------
+   Theme & Base
+------------------------------ */
 :root {
-    --primary-color: #0066cc;
-    --secondary-color: #004d99;
-    --accent-color: #ff9900;
-    --info-color: #17a2b8;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    --success-color: #28a745;
-    --error-color: #dc3545;
-    --border-radius: 6px;
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --bg-page: #f8fafc;          /* soft slate */
+  --bg-card: #ffffff;          /* white */
+  --bg-drop: #f1f5f9;          /* slate-100 */
+  --bg-code: #0b1020;          /* near-black for code contrast (used in inline examples only) */
+
+  --text-main: #0f172a;        /* slate-900 */
+  --text-muted: #64748b;       /* slate-500 */
+  --text-inverse: #ffffff;     /* white */
+
+  --border: #e5e7eb;           /* gray-200 */
+  --border-strong: #cbd5e1;    /* slate-300 */
+
+  --accent: #6366f1;           /* indigo-500 */
+  --accent-600: #4f46e5;       /* indigo-600 */
+
+  --ok: #16a34a;               /* green-600 */
+  --warn: #f59e0b;             /* amber-500 */
+  --err: #dc2626;              /* red-600 */
+
+  --radius: 12px;
+  --shadow-sm: 0 4px 16px rgba(2, 6, 23, 0.06);
+  --shadow-md: 0 10px 30px rgba(2, 6, 23, 0.10);
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
+  background: var(--bg-page);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
 }
 
+/* -----------------------------
+   Navbar
+------------------------------ */
 .navbar {
-    background-color: var(--primary-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: saturate(150%) blur(6px);
 }
 
+.navbar .badge {
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+}
+
+/* -----------------------------
+   Cards & Sections
+------------------------------ */
 .card {
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    border: none;
-    margin-bottom: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  background: var(--bg-card);
 }
 
 .card-header {
-    background-color: var(--primary-color);
-    padding: 1rem;
+  border-bottom: 1px solid var(--border);
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+.card-body > h1, 
+.card-body > h2,
+.card-body > h3 {
+  letter-spacing: 0.1px;
 }
 
-.btn-primary:hover, .btn-primary:focus {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+/* -----------------------------
+   Hints (Glossary)
+------------------------------ */
+#advancedHints .list-group-item.hint-link {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.btn-success {
-    background-color: var(--success-color);
-    border-color: var(--success-color);
+#advancedHints .list-group-item.hint-link:hover {
+  background: #eef2ff; /* indigo-50 */
+  color: #3730a3;       /* indigo-800 */
 }
 
-.btn-info {
-    background-color: var(--info-color);
-    border-color: var(--info-color);
+/* -----------------------------
+   Drag & Drop Areas
+------------------------------ */
+.block-container,
+.solution-container {
+  min-height: 220px;
+  border: 2px dashed var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  background: var(--bg-drop);
+  padding: 10px;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-/* Challenge Sections */
-.challenge {
-    display: none;
+.block-container:hover,
+.solution-container:hover {
+  border-color: var(--border-strong);
+  background: #eef2f7;
 }
 
-.challenge.active {
-    display: block;
+.block-container:focus-within,
+.solution-container:focus-within {
+  outline: 3px solid rgba(79, 70, 229, 0.25); /* indigo focus */
+  outline-offset: 2px;
 }
 
-.challenge-header {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-}
-
-.variable-explanation {
-    background-color: #f8f9fa;
-    border-left: 4px solid var(--info-color);
-    margin-bottom: 1rem;
-}
-
-#greetingExample, #oddEvenResult {
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-/* Code Blocks */
-.code-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-    .code-container {
-        flex-direction: row;
-    }
-    
-    .code-blocks-container, .solution-container {
-        flex: 1;
-        min-width: 400px; /* Increased width to accommodate longer code lines */
-    }
-}
-
-.block-container, .solution-blocks {
-    min-height: 200px;
-    border: 2px dashed #ccc;
-    border-radius: var(--border-radius);
-    padding: 1rem;
-    background-color: #f8f9fa;
-}
-
-.solution-blocks {
-    background-color: #e9ecef;
-    border: 2px solid #dee2e6;
-}
-
+/* -----------------------------
+   Code Blocks
+------------------------------ */
 .code-block {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    cursor: grab;
-    user-select: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-    font-family: 'Courier New', Courier, monospace;
-    position: relative;
-    white-space: nowrap; /* Prevent wrapping completely */
-    overflow-x: auto; /* Add horizontal scrolling if needed */
-    min-width: 275px; /* Force a wider minimum width */
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 6px solid transparent;
+  border-radius: calc(var(--radius) - 4px);
+  box-shadow: 0 1px 0 rgba(2, 6, 23, 0.03);
+  cursor: grab;
+  user-select: none;
 }
 
-.solution-blocks .code-block {
-    width: 100%; /* Make code blocks in solution area fit container */
+.code-block:active {
+  cursor: grabbing;
 }
 
-.code-block div {
-    white-space: nowrap; /* Apply nowrap to inner content as well */
+.code-block pre {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  background: transparent;
+  color: #111827; /* gray-900 for readability */
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
-.code-block:hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.code-block .block-info {
+  opacity: 0.65;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
+.code-block:hover .block-info {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* Correct / incorrect highlighting (applied after check) */
 .code-block.correct {
-    border-left: 4px solid var(--success-color);
+  border-left-color: var(--ok);
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.08) inset;
 }
 
 .code-block.incorrect {
-    border-left: 4px solid var(--error-color);
+  border-left-color: var(--err);
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.08) inset;
 }
 
-.block-info {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-    cursor: pointer;
-}
-
-.block-info:hover {
-    color: var(--primary-color);
-}
-
-/* Feedback */
-.feedback {
-    padding: 1rem;
-    border-radius: var(--border-radius);
-    display: none;
-}
-
-.feedback.success {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-    display: block;
-}
-
-.feedback.error {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
-    display: block;
-}
-
-/* Explanations */
-.explanation {
-    padding: 1rem;
-    background-color: #e9f7fe;
-    border: 1px solid #bee5eb;
-    border-radius: var(--border-radius);
-}
-
-.explanation-item {
-    padding: 0.5rem 0;
-    border-bottom: 1px dashed #ccc;
-}
-
-.explanation-item:last-child {
-    border-bottom: none;
-}
-
-/* Output Display */
-.output-display {
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #212529;
-    border-radius: var(--border-radius);
-}
-
-.output-display pre {
-    margin-bottom: 0;
-}
-
-/* Completion Screen */
-.completion-icon {
-    font-size: 4rem;
-    color: var(--success-color);
-}
-
-/* Animation for correct answers */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-
-.pulse {
-    animation: pulse 0.5s ease-in-out;
-}
-
-/* Dragging styles */
+/* SortableJS states */
 .sortable-ghost {
-    opacity: 0.4;
+  opacity: 0.6;
 }
 
 .sortable-chosen {
-    background-color: #e9ecef;
+  box-shadow: var(--shadow-md);
+  transform: scale(0.997);
 }
 
-/* Hint system styles */
-.hint-counter .badge {
-    background-color: var(--info-color);
-    font-size: 0.9rem;
-    padding: 0.5rem 0.8rem;
+.sortable-drag {
+  opacity: 0.95;
 }
 
-.hint-list {
-    list-style-type: none;
-    padding-left: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 0;
+/* -----------------------------
+   Buttons
+------------------------------ */
+.btn-primary {
+  background: var(--accent-600);
+  border-color: var(--accent-600);
 }
 
-.hint-list li {
-    margin-bottom: 0.5rem;
+.btn-primary:hover,
+.btn-primary:focus {
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
-.term-link {
-    color: var(--info-color);
-    font-weight: 500;
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+  background: #eef2f7;
 }
 
-.term-link:hover {
-    color: var(--secondary-color);
-    text-decoration: underline !important;
+/* -----------------------------
+   Feedback / Output / Explanation
+------------------------------ */
+#feedback1 .alert, 
+#feedback2 .alert {
+  border-radius: 10px;
 }
 
-/* Code examples in modals */
-.code-example {
-    font-family: 'Courier New', Courier, monospace;
-    white-space: pre-wrap;
-    font-size: 0.9rem;
+#output1 pre,
+#output2 pre {
+  background: #0f172a;     /* slate-900 */
+  color: var(--text-inverse);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
 }
 
-/* Stats container in completion screen */
-.stats-container {
-    background-color: #f8f9fa;
-    border-radius: var(--border-radius);
-    padding: 1rem;
-    margin: 1rem 0;
-    display: inline-block;
+#explanation1 pre code,
+#explanation2 pre code {
+  color: #0b1020;
 }
 
-/* Name input styling */
-.name-placeholder {
-    font-style: italic;
-    color: #6c757d;
+#explanation1 .explanation-content > div,
+#explanation2 .explanation-content > div {
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 10px;
 }
 
-input[type="number"] {
-    font-family: 'Courier New', Courier, monospace;
+#explanation1 .explanation-content > div:last-child,
+#explanation2 .explanation-content > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 576px) {
-    .code-container {
-        flex-direction: column;
-    }
-    
-    .block-container, .solution-blocks {
-        min-height: 150px;
-    }
-    
-    .hint-list {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+/* -----------------------------
+   Completion Screen
+------------------------------ */
+#completion .display-5 i {
+  filter: drop-shadow(0 6px 10px rgba(16, 185, 129, 0.35));
+}
+
+#completion .border {
+  border-radius: 12px !important;
+}
+
+/* -----------------------------
+   Forms
+------------------------------ */
+.form-label code {
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* -----------------------------
+   Accessibility helpers
+------------------------------ */
+:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, 0.35);
+  outline-offset: 2px;
+}
+
+/* -----------------------------
+   Utilities / Minor tweaks
+------------------------------ */
+.small, .form-text {
+  color: var(--text-muted);
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+pre {
+  margin: 0;
+}
+
+/* -----------------------------
+   Responsive
+------------------------------ */
+@media (max-width: 991.98px) {
+  .block-container,
+  .solution-container {
+    min-height: 180px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .navbar .navbar-brand {
+    font-size: 0.95rem;
+  }
+
+  .code-block pre {
+    font-size: 0.92rem;
+  }
+
+  .card-body > ul {
+    padding-left: 1.1rem;
+  }
 }

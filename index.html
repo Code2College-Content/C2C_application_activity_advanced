@@ -1,236 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code2College - Coding Challenge</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Code2College — Function Arrangement: Intermediate</title>
+  <meta name="description" content="Drag-and-drop Python function arrangement challenges that practice loops, sets, and validation." />
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Font Awesome (icons) -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <!-- Project Styles -->
+  <link href="styles.css" rel="stylesheet" />
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <span class="fw-bold">Code2College</span>
-            </a>
-            <div class="ms-auto d-flex align-items-center">
-                <div class="hint-counter me-3">
-                    <span class="badge bg-info">Hints used: <span id="hintCount">0</span></span>
-                </div>
-            </div>
-        </div>
-    </nav>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-semibold" href="#">
+        Code2College — Function Arrangement: <span class="text-primary">Intermediate</span>
+      </a>
 
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h1 class="h4 mb-0">Coding Challenge: Function Arrangement</h1>
-                    </div>
-                    <div class="card-body">
-                        <div id="instructions" class="mb-4">
-                            <h2 class="h5">Instructions:</h2>
-                            <p>Drag and drop the code blocks into the correct order to create a working function. Once you've arranged the blocks, click "Check My Answer" to see if you're correct!</p>
-                            
-                            <div class="hint-section mb-3">
-                                <button class="btn btn-outline-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#codingHints" aria-expanded="false" aria-controls="codingHints">
-                                    <i class="fas fa-lightbulb me-1"></i> Show Coding Hints
-                                </button>
-                                <div class="collapse mt-2" id="codingHints">
-                                    <div class="card card-body">
-                                        <h5 class="h6">Helpful Coding Terms:</h5>
-                                        <ul class="hint-list">
-                                            <li>
-                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="variable">variables</button>
-                                            </li>
-                                            <li>
-                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="def">def</button>
-                                            </li>
-                                            <li>
-                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="return">return</button>
-                                            </li>
-                                            <li>
-                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="if-else">if/else statements</button>
-                                            </li>
-                                            <li>
-                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="indentation">indentation</button>
-                                            </li>
-                                            <li>
-                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="modulo">modulo operator (%)</button>
-                                            </li>
-                                            <li>
-                                                <button class="btn btn-link p-0 text-decoration-none term-link" data-term="print">print</button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <!-- (Optional) Timer display (JS can toggle/use this) -->
+        <span id="timer" class="text-secondary small" aria-live="polite" aria-atomic="true">
+          <!-- JS can populate a running timer if desired -->
+        </span>
 
-                        <div class="challenges">
-                            <!-- Challenge 1 -->
-                            <div id="challenge1" class="challenge active">
-                                <div class="challenge-header">
-                                    <h3 class="h5">Challenge 1: Create a greeting function</h3>
-                                    <div class="variable-explanation mb-3 p-3 bg-light rounded">
-                                        <h4 class="h6">What is a variable?</h4>
-                                        <p>A <strong>variable</strong> is a container that stores information in your code. Think of it like a labeled box that holds a value you can use later.</p>
-                                        <div class="input-group mb-2">
-                                            <span class="input-group-text">your_name = </span>
-                                            <input type="text" id="nameInput" class="form-control name-placeholder" placeholder="Enter your name" value="Enter Name Here">
-                                        </div>
-                                        <p class="small text-muted mb-0">Try changing the variable above to your own name</p>
-                                    </div>
-                                    <p>Function: <code>greet(name)</code> should print a greeting like "<span id="greetingExample">Hello, <i class="text-secondary">Enter Name Here</i>!</span>"</p>
-                                </div>
-                                
-                                <div class="code-container">
-                                    <div class="code-blocks-container">
-                                        <h4 class="h6">Code Blocks:</h4>
-                                        <div id="blockContainer1" class="block-container">
-                                            <!-- Code blocks will be added here by JavaScript -->
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="solution-container">
-                                        <h4 class="h6">Your Solution:</h4>
-                                        <div id="solutionContainer1" class="solution-blocks">
-                                            <!-- Blocks will be dropped here -->
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-3">
-                                    <button id="checkBtn1" class="btn btn-primary">Check My Answer</button>
-                                    <button id="resetBtn1" class="btn btn-secondary">Reset</button>
-                                </div>
-                                
-                                <div id="feedback1" class="feedback mt-3"></div>
-
-                                <div class="output-display mt-4 p-3 bg-dark text-light rounded" style="display: none;">
-                                    <h4 class="h6 text-light">Output:</h4>
-                                    <pre class="mb-0"><code id="outputText">Hello, Enter Name Here!</code></pre>
-                                </div>
-                                
-                                <div id="explanation1" class="explanation mt-4" style="display: none;">
-                                    <h4 class="h6">Explanation:</h4>
-                                    <div class="explanation-content">
-                                        <!-- Explanation content will be added by JavaScript -->
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4 text-end">
-                                    <button id="nextBtn1" class="btn btn-success" disabled>Next Challenge &rarr;</button>
-                                </div>
-                            </div>
-
-                            <!-- Challenge 2 -->
-                            <div id="challenge2" class="challenge">
-                                <div class="challenge-header">
-                                    <h3 class="h5">Challenge 2: Check if a number is even or odd</h3>
-                                    <div class="variable-explanation mb-3 p-3 bg-light rounded">
-                                        <h4 class="h6">Test with a Number:</h4>
-                                        <p>Let's test your <code>is_even()</code> function with different numbers.</p>
-                                        <div class="input-group mb-2">
-                                            <span class="input-group-text">test_number = </span>
-                                            <input type="number" id="numberInput" class="form-control" placeholder="Enter a number" value="42">
-                                        </div>
-                                        <p class="small text-muted mb-0">Try changing the number to see if it's even or odd</p>
-                                    </div>
-                                    <p>Function: <code>is_even(n)</code> should return "<span id="oddEvenResult">Even</span>" if the number is even, "Odd" otherwise</p>
-                                </div>
-                                
-                                <div class="code-container">
-                                    <div class="code-blocks-container">
-                                        <h4 class="h6">Code Blocks:</h4>
-                                        <div id="blockContainer2" class="block-container">
-                                            <!-- Code blocks will be added here by JavaScript -->
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="solution-container">
-                                        <h4 class="h6">Your Solution:</h4>
-                                        <div id="solutionContainer2" class="solution-blocks">
-                                            <!-- Blocks will be dropped here -->
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-3">
-                                    <button id="checkBtn2" class="btn btn-primary">Check My Answer</button>
-                                    <button id="resetBtn2" class="btn btn-secondary">Reset</button>
-                                </div>
-                                
-                                <div id="feedback2" class="feedback mt-3"></div>
-
-                                <div class="output-display mt-4 p-3 bg-dark text-light rounded" id="outputDisplay2" style="display: none;">
-                                    <h4 class="h6 text-light">Output:</h4>
-                                    <pre class="mb-0"><code id="outputText2">Even</code></pre>
-                                </div>
-                                
-                                <div id="explanation2" class="explanation mt-4" style="display: none;">
-                                    <h4 class="h6">Explanation:</h4>
-                                    <div class="explanation-content">
-                                        <!-- Explanation content will be added by JavaScript -->
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4 d-flex justify-content-between">
-                                    <button id="prevBtn2" class="btn btn-outline-secondary">&larr; Previous Challenge</button>
-                                    <button id="completeBtn" class="btn btn-success">Complete Challenge</button>
-                                </div>
-                            </div>
-
-                            <!-- Completion Screen -->
-                            <div id="completion" class="challenge">
-                                <div class="text-center py-5">
-                                    <div class="completion-icon mb-4">
-                                        <i class="fas fa-check-circle"></i>
-                                    </div>
-                                    <h2 class="h4">Congratulations!</h2>
-                                    <p class="lead">You've successfully completed the Code2College coding challenge.</p>
-                                    <div class="stats-container mb-4">
-                                        <p>You used <span id="finalHintCount" class="fw-bold text-info">0</span> hints to complete this challenge.</p>
-                                    </div>
-                                    <p>Thank you for participating. Your results have been submitted.</p>
-                                    <div class="mt-4">
-                                        <button id="restartBtn" class="btn btn-primary">Try Again</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer text-center">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Hint counter -->
+        <span class="badge text-bg-warning" id="hintCountBadge" aria-label="Hints used">0 Hints</span>
+      </div>
     </div>
+  </nav>
 
-    <!-- Term Definition Modal -->
-    <div class="modal fade" id="termModal" tabindex="-1" aria-labelledby="termModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="termModalLabel">Coding Term</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+  <main class="container my-4">
+    <!-- Intro & Instructions -->
+    <section class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h1 class="h3 mb-3">How this works</h1>
+          <ul class="mb-3">
+            <li>Drag shuffled lines into the <strong>Your Solution</strong> area to build a correct Python function.</li>
+            <li>Click <strong>Check My Answer</strong> for feedback. Use the <i class="fa-regular fa-circle-question"></i> on any line or open <strong>Advanced Hints</strong> if you’re stuck.</li>
+            <li>When correct, read the explanation and try the inputs to preview the function’s output.</li>
+          </ul>
+
+          <!-- Advanced Hints (Glossary) -->
+          <div class="border-top pt-3">
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#advancedHints"
+              aria-expanded="false"
+              aria-controls="advancedHints"
+            >
+              <i class="fa-solid fa-lightbulb me-1"></i> Advanced Hints
+            </button>
+            <div class="collapse mt-3" id="advancedHints">
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <div class="list-group small">
+                    <a href="#" class="list-group-item list-group-item-action hint-link" data-term="for">for loop</a>
+                    <a href="#" class="list-group-item list-group-item-action hint-link" data-term="range">range()</a>
+                    <a href="#" class="list-group-item list-group-item-action hint-link" data-term="modulo">modulo (%)</a>
+                    <a href="#" class="list-group-item list-group-item-action hint-link" data-term="guard">guard clause</a>
+                  </div>
                 </div>
-                <div class="modal-body">
-                    <h4 id="termTitle" class="h5 mb-3"></h4>
-                    <div id="termDefinition"></div>
-                    <div id="termExample" class="bg-light p-3 mt-3 rounded code-example"></div>
+                <div class="col-12 col-md-6">
+                  <div class="list-group small">
+                    <a href="#" class="list-group-item list-group-item-action hint-link" data-term="accumulator">accumulator</a>
+                    <a href="#" class="list-group-item list-group-item-action hint-link" data-term="set">set</a>
+                    <a href="#" class="list-group-item list-group-item-action hint-link" data-term="add">set.add()</a>
+                    <a href="#" class="list-group-item list-group-item-action hint-link" data-term="sorted">sorted()</a>
+                  </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+              </div>
+              <p class="text-muted mt-3 mb-0 small">Click a term to see a short definition and example. Opening hints increases your hint counter.</p>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <script src="script.js"></script>
+    <!-- Challenge 1 -->
+    <section id="challenge1" class="challenge">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-transparent">
+          <h2 class="h4 mb-0">Challenge 1 — Sum of Multiples</h2>
+        </div>
+        <div class="card-body">
+          <p class="mb-3">
+            Build <code>sum_of_multiples(n, k)</code> that returns the sum of all integers <code>i</code> in
+            <code>1..n</code> such that <code>i % k == 0</code>. For invalid input
+            (<code>n &lt; 0</code> or <code>k &lt;= 0</code>) return <code>None</code>.
+          </p>
+
+          <!-- Inputs -->
+          <div class="row g-3 align-items-end mb-3">
+            <div class="col-12 col-md-4">
+              <label for="nInput" class="form-label">Enter <code>n</code> (≥ 0)</label>
+              <input id="nInput" type="number" min="0" step="1" value="10" class="form-control" />
+            </div>
+            <div class="col-12 col-md-4">
+              <label for="kInput" class="form-label">Enter <code>k</code> (&gt; 0)</label>
+              <input id="kInput" type="number" min="1" step="1" value="3" class="form-control" />
+            </div>
+          </div>
+
+          <!-- Drag & Drop Areas -->
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="card h-100">
+                <div class="card-header bg-transparent">
+                  <strong>Code Blocks</strong>
+                  <span class="text-muted small d-block">Drag from here</span>
+                </div>
+                <div class="card-body">
+                  <div id="blockContainer1" class="block-container" aria-label="Code blocks bin (Challenge 1)"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="card h-100">
+                <div class="card-header bg-transparent">
+                  <strong>Your Solution</strong>
+                  <span class="text-muted small d-block">Drop blocks here in order</span>
+                </div>
+                <div class="card-body">
+                  <div id="solutionContainer1" class="solution-container" aria-label="Your solution (Challenge 1)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button id="check1" class="btn btn-primary">
+              <i class="fa-solid fa-spell-check me-1"></i> Check My Answer
+            </button>
+            <button id="reset1" class="btn btn-outline-secondary">
+              <i class="fa-solid fa-rotate-left me-1"></i> Reset
+            </button>
+            <button id="next1" class="btn btn-success ms-auto" disabled>
+              Next Challenge <i class="fa-solid fa-arrow-right ms-1"></i>
+            </button>
+          </div>
+
+          <!-- Feedback / Explanation / Output -->
+          <div id="feedback1" class="mt-3" aria-live="polite" aria-atomic="true"></div>
+
+          <div id="explanation1" class="mt-3 d-none">
+            <h3 class="h5">Explanation</h3>
+            <div class="explanation-content"></div>
+          </div>
+
+          <div id="output1" class="mt-3 d-none">
+            <h3 class="h6">Output Preview</h3>
+            <pre class="mb-0" aria-live="polite"><code id="outputText1"></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Challenge 2 -->
+    <section id="challenge2" class="challenge d-none">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-transparent">
+          <h2 class="h4 mb-0">Challenge 2 — Unique Sorted Evens</h2>
+        </div>
+        <div class="card-body">
+          <p class="mb-3">
+            Build <code>unique_sorted_evens(nums)</code> that returns a <em>sorted</em> list of <em>unique</em> even integers
+            from input list <code>nums</code>.
+          </p>
+
+          <!-- Inputs -->
+          <div class="row g-3 align-items-end mb-3">
+            <div class="col-12 col-md-8">
+              <label for="numsInput" class="form-label">Enter comma-separated integers</label>
+              <input id="numsInput" type="text" class="form-control" placeholder="e.g. 3, 6, 2, 6, 1, 8" />
+              <div class="form-text">We’ll parse these after your solution is correct.</div>
+            </div>
+          </div>
+
+          <!-- Drag & Drop Areas -->
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="card h-100">
+                <div class="card-header bg-transparent">
+                  <strong>Code Blocks</strong>
+                  <span class="text-muted small d-block">Drag from here</span>
+                </div>
+                <div class="card-body">
+                  <div id="blockContainer2" class="block-container" aria-label="Code blocks bin (Challenge 2)"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="card h-100">
+                <div class="card-header bg-transparent">
+                  <strong>Your Solution</strong>
+                  <span class="text-muted small d-block">Drop blocks here in order</span>
+                </div>
+                <div class="card-body">
+                  <div id="solutionContainer2" class="solution-container" aria-label="Your solution (Challenge 2)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button id="prev2" class="btn btn-outline-secondary">
+              <i class="fa-solid fa-arrow-left me-1"></i> Previous
+            </button>
+            <button id="check2" class="btn btn-primary">
+              <i class="fa-solid fa-spell-check me-1"></i> Check My Answer
+            </button>
+            <button id="reset2" class="btn btn-outline-secondary">
+              <i class="fa-solid fa-rotate-left me-1"></i> Reset
+            </button>
+            <button id="complete2" class="btn btn-success ms-auto" disabled>
+              Complete <i class="fa-solid fa-flag-checkered ms-1"></i>
+            </button>
+          </div>
+
+          <!-- Feedback / Explanation / Output -->
+          <div id="feedback2" class="mt-3" aria-live="polite" aria-atomic="true"></div>
+
+          <div id="explanation2" class="mt-3 d-none">
+            <h3 class="h5">Explanation</h3>
+            <div class="explanation-content"></div>
+          </div>
+
+          <div id="output2" class="mt-3 d-none">
+            <h3 class="h6">Output Preview</h3>
+            <pre class="mb-0" aria-live="polite"><code id="outputText2"></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Completion Screen -->
+    <section id="completion" class="d-none">
+      <div class="card shadow-sm">
+        <div class="card-body text-center py-5">
+          <div class="display-5 text-success mb-3">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <h2 class="h3 mb-2">Great work!</h2>
+          <p class="text-muted mb-4">You’ve completed all intermediate challenges.</p>
+
+          <div class="row justify-content-center mb-4">
+            <div class="col-auto">
+              <div class="border rounded p-3">
+                <div class="small text-muted">Total Hints Used</div>
+                <div class="fs-4" id="finalHintCount">0</div>
+              </div>
+            </div>
+          </div>
+
+          <button id="restartAll" class="btn btn-primary">
+            <i class="fa-solid fa-rotate me-1"></i> Try Again
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Term Definition Modal -->
+  <div
+    class="modal fade"
+    id="termModal"
+    tabindex="-1"
+    aria-labelledby="termModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="termModalLabel">Term</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="termModalBody" class="mb-2"></p>
+          <pre class="bg-body-tertiary p-2 rounded small mb-0"><code id="termModalExample"></code></pre>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts (order matters: SortableJS, Bootstrap bundle, then project script) -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

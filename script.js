@@ -1,508 +1,645 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Hint counter
-    let hintCount = 0;
-    const hintCountElement = document.getElementById('hintCount');
-    const finalHintCountElement = document.getElementById('finalHintCount');
-    
-    // Name variable for the first challenge
-    const nameInput = document.getElementById('nameInput');
-    const greetingExample = document.getElementById('greetingExample');
-    const outputText = document.getElementById('outputText');
-    const outputDisplay = document.querySelector('.output-display');
-    
-    // Number variable for the second challenge
-    const numberInput = document.getElementById('numberInput');
-    const oddEvenResult = document.getElementById('oddEvenResult');
-    const outputText2 = document.getElementById('outputText2');
-    const outputDisplay2 = document.getElementById('outputDisplay2');
-    
-    // Apply initial styling to name input
-    nameInput.classList.add('name-placeholder');
-    
-    // Update greeting example when name changes
-    nameInput.addEventListener('input', function() {
-        const name = nameInput.value.trim();
-        
-        if (name === '') {
-            nameInput.value = 'Enter Name Here';
-            nameInput.classList.add('name-placeholder');
-            greetingExample.textContent = `Hello, Enter Name Here!`;
-            outputText.textContent = `Hello, Enter Name Here!`;
-        } else {
-            if (name !== 'Enter Name Here') {
-                nameInput.classList.remove('name-placeholder');
-            }
-            greetingExample.textContent = `Hello, ${name}!`;
-            outputText.textContent = `Hello, ${name}!`;
+/* script.js — Code2College — Function Arrangement: Intermediate
+   Complete, standalone logic for the new project (no dependencies on prior repo).
+   Uses: Bootstrap (modal), SortableJS (drag & drop), vanilla JS.
+*/
+
+// ------------------------------
+// Globals & Config
+// ------------------------------
+let hintCount = 0;
+
+const selectors = {
+  // Challenge 1
+  blocks1: "#blockContainer1",
+  solution1: "#solutionContainer1",
+  feedback1: "#feedback1",
+  explanation1: "#explanation1",
+  output1: "#output1",
+  outputText1: "#outputText1",
+  next1: "#next1",
+  check1: "#check1",
+  reset1: "#reset1",
+
+  // Challenge 2
+  blocks2: "#blockContainer2",
+  solution2: "#solutionContainer2",
+  feedback2: "#feedback2",
+  explanation2: "#explanation2",
+  output2: "#output2",
+  outputText2: "#outputText2",
+  prev2: "#prev2",
+  check2: "#check2",
+  reset2: "#reset2",
+  complete2: "#complete2",
+
+  // Screens
+  challenge1: "#challenge1",
+  challenge2: "#challenge2",
+  completion: "#completion",
+
+  // Hints & Modals
+  hintBadge: "#hintCountBadge",
+  termLinks: ".hint-link",
+  termModal: "#termModal",
+  termModalLabel: "#termModalLabel",
+  termModalBody: "#termModalBody",
+  termModalExample: "#termModalExample",
+  restartAll: "#restartAll"
+};
+
+// Glossary / Hints content
+const codingTerms = {
+  "for": {
+    title: "for loop",
+    definition:
+      "A control flow statement that repeats a block of code for each item in a sequence (e.g., range, list).",
+    example: "for i in range(1, 4):\n    print(i)  # 1, 2, 3"
+  },
+  "range": {
+    title: "range()",
+    definition:
+      "A built-in function that generates a sequence of integers, commonly used with for loops.",
+    example: "for i in range(2, 6):\n    print(i)  # 2, 3, 4, 5"
+  },
+  "modulo": {
+    title: "modulo (%)",
+    definition:
+      "The modulo operator returns the remainder of division. Useful for divisibility tests.",
+    example: "if x % 2 == 0:\n    print('even')"
+  },
+  "guard": {
+    title: "guard clause",
+    definition:
+      "A quick input check that returns early when arguments are invalid, keeping code simple and safe.",
+    example: "def f(n):\n    if n < 0:\n        return None\n    # ... continue ..."
+  },
+  "accumulator": {
+    title: "accumulator",
+    definition:
+      "A variable that collects or builds a result as you loop, such as a running total or product.",
+    example: "total = 0\nfor x in values:\n    total += x"
+  },
+  "set": {
+    title: "set",
+    definition:
+      "An unordered collection of unique items. Great for removing duplicates quickly.",
+    example: "s = set([2, 2, 3])  # {2, 3}"
+  },
+  "add": {
+    title: "set.add()",
+    definition:
+      "A method to insert a new item into a set. If the item exists, the set is unchanged.",
+    example: "evens = set()\nevens.add(2)\nevens.add(2)  # still {2}"
+  },
+  "sorted": {
+    title: "sorted()",
+    definition:
+      "A built-in function that returns a new sorted list from any iterable (set, list, etc.).",
+    example: "sorted({3, 1, 2})  # [1, 2, 3]"
+  }
+};
+
+// Content data (two challenges)
+const challenges = [
+  {
+    id: 1,
+    title: "Sum of Multiples",
+    overview:
+      "This function validates inputs, initialises a running total, loops over 1..n, filters by modulo, and returns the sum.",
+    blocks: [
+      {
+        text: "def sum_of_multiples(n, k):",
+        order: 1,
+        explanation:
+          "Defines a function named sum_of_multiples that takes two parameters: n and k."
+      },
+      {
+        text: "if n < 0 or k <= 0:",
+        order: 2,
+        explanation:
+          "Guard clause: invalid input should immediately return None."
+      },
+      {
+        text: "    return None",
+        order: 3,
+        explanation:
+          "Return a sentinel value indicating invalid input."
+      },
+      {
+        text: "total = 0",
+        order: 4,
+        explanation:
+          "Initialise the accumulator for the running total."
+      },
+      {
+        text: "for i in range(1, n + 1):",
+        order: 5,
+        explanation:
+          "Loop from 1 through n (inclusive)."
+      },
+      {
+        text: "    if i % k == 0:",
+        order: 6,
+        explanation:
+          "Use modulo to check if i is a multiple of k."
+      },
+      {
+        text: "        total += i",
+        order: 7,
+        explanation:
+          "Accumulate by adding multiples into total."
+      },
+      {
+        text: "return total",
+        order: 8,
+        explanation:
+          "Return the final computed total."
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "Unique Sorted Evens",
+    overview:
+      "This function builds a set to remove duplicates, filters even numbers, and returns a sorted list.",
+    blocks: [
+      {
+        text: "def unique_sorted_evens(nums):",
+        order: 1,
+        explanation:
+          "Defines a function that will operate on a list of integers."
+      },
+      {
+        text: "evens = set()",
+        order: 2,
+        explanation:
+          "A set keeps only unique values, perfect for deduplicating."
+      },
+      {
+        text: "for n in nums:",
+        order: 3,
+        explanation:
+          "Iterate over each item in the list."
+      },
+      {
+        text: "    if n % 2 == 0:",
+        order: 4,
+        explanation:
+          "Filter to keep only even numbers."
+      },
+      {
+        text: "        evens.add(n)",
+        order: 5,
+        explanation:
+          "Insert the even number into the set (duplicates ignored)."
+      },
+      {
+        text: "return sorted(evens)",
+        order: 6,
+        explanation:
+          "Convert the set back to a sorted list before returning."
+      }
+    ]
+  }
+];
+
+// ------------------------------
+// Utilities
+// ------------------------------
+function qs(sel, root = document) {
+  return root.querySelector(sel);
+}
+function qsa(sel, root = document) {
+  return Array.from(root.querySelectorAll(sel));
+}
+function clearChildren(el) {
+  while (el.firstChild) el.removeChild(el.firstChild);
+}
+function shuffleInPlace(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+function incrementHintCount() {
+  hintCount += 1;
+  const badge = qs(selectors.hintBadge);
+  if (badge) {
+    badge.textContent = `${hintCount} Hints`;
+  }
+}
+function show(el) {
+  el.classList.remove("d-none");
+}
+function hide(el) {
+  el.classList.add("d-none");
+}
+function setFeedback(container, type, message) {
+  container.innerHTML = `
+    <div class="alert alert-${type} mb-0" role="alert">
+      ${message}
+    </div>
+  `;
+}
+function removeBlockStateClasses(el) {
+  el.classList.remove("correct", "incorrect");
+}
+
+// ------------------------------
+// Block Explanation Modal (dynamic)
+// ------------------------------
+let dynamicBlockModal = null;
+function ensureBlockModal() {
+  if (dynamicBlockModal) return dynamicBlockModal;
+
+  const modalHtml = document.createElement("div");
+  modalHtml.className = "modal fade";
+  modalHtml.id = "blockExplainModal";
+  modalHtml.tabIndex = -1;
+  modalHtml.setAttribute("aria-hidden", "true");
+  modalHtml.innerHTML = `
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Line explanation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <pre class="bg-body-tertiary p-2 rounded small"><code id="blockExplainCode"></code></pre>
+          <p id="blockExplainText" class="mt-3 mb-0"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modalHtml);
+  dynamicBlockModal = new bootstrap.Modal(modalHtml);
+  return dynamicBlockModal;
+}
+
+function showBlockExplanation(codeText, explanation) {
+  const modal = ensureBlockModal();
+  qs("#blockExplainCode").textContent = codeText;
+  qs("#blockExplainText").textContent = explanation;
+  modal.show();
+  incrementHintCount();
+}
+
+// ------------------------------
+// Create a draggable block element
+// ------------------------------
+function createBlockElement(block) {
+  const wrapper = document.createElement("div");
+  wrapper.className =
+    "code-block border rounded p-2 mb-2 d-flex align-items-start justify-content-between gap-2";
+  wrapper.dataset.order = String(block.order);
+  wrapper.dataset.explanation = block.explanation;
+
+  // Left: code text
+  const codePre = document.createElement("pre");
+  codePre.className = "m-0 flex-grow-1";
+  const codeEl = document.createElement("code");
+  codeEl.textContent = block.text;
+  codePre.appendChild(codeEl);
+
+  // Right: info icon
+  const info = document.createElement("span");
+  info.className = "block-info text-muted small ms-2";
+  info.title = "Explain this line";
+  info.style.cursor = "pointer";
+  info.innerHTML = `<i class="far fa-question-circle"></i>`;
+  info.addEventListener("click", (e) => {
+    e.preventDefault();
+    showBlockExplanation(block.text, block.explanation);
+  });
+
+  wrapper.appendChild(codePre);
+  wrapper.appendChild(info);
+
+  return wrapper;
+}
+
+// ------------------------------
+// Challenge initialisation
+// ------------------------------
+function initializeChallenge(id) {
+  const data = challenges.find((c) => c.id === id);
+  if (!data) return;
+
+  const blockContainer =
+    id === 1 ? qs(selectors.blocks1) : qs(selectors.blocks2);
+  const solutionContainer =
+    id === 1 ? qs(selectors.solution1) : qs(selectors.solution2);
+  const feedback =
+    id === 1 ? qs(selectors.feedback1) : qs(selectors.feedback2);
+  const explanation =
+    id === 1 ? qs(selectors.explanation1) : qs(selectors.explanation2);
+  const output =
+    id === 1 ? qs(selectors.output1) : qs(selectors.output2);
+  const nextOrCompleteBtn =
+    id === 1 ? qs(selectors.next1) : qs(selectors.complete2);
+
+  // Clear UI
+  clearChildren(blockContainer);
+  clearChildren(solutionContainer);
+  feedback.innerHTML = "";
+  hide(explanation);
+  hide(output);
+  if (nextOrCompleteBtn) nextOrCompleteBtn.disabled = true;
+
+  // Build shuffled blocks
+  const blocksCopy = data.blocks.map((b) => ({ ...b }));
+  shuffleInPlace(blocksCopy);
+  blocksCopy.forEach((blk) => blockContainer.appendChild(createBlockElement(blk)));
+
+  // Wire SortableJS (one-time per container; but safe to re-create)
+  const groupName = `challenge-${id}`;
+  Sortable.create(blockContainer, {
+    group: { name: groupName, pull: true, put: true },
+    animation: 150,
+    sort: true
+  });
+  Sortable.create(solutionContainer, {
+    group: { name: groupName, pull: true, put: true },
+    animation: 150,
+    sort: true
+  });
+}
+
+// ------------------------------
+// Checking logic
+// ------------------------------
+function checkAnswer(id) {
+  const data = challenges.find((c) => c.id === id);
+  if (!data) return;
+
+  const solutionContainer =
+    id === 1 ? qs(selectors.solution1) : qs(selectors.solution2);
+  const feedback =
+    id === 1 ? qs(selectors.feedback1) : qs(selectors.feedback2);
+
+  const blocks = qsa(".code-block", solutionContainer);
+  // Remove prior state
+  blocks.forEach(removeBlockStateClasses);
+
+  if (blocks.length !== data.blocks.length) {
+    setFeedback(
+      feedback,
+      "danger",
+      "Please place all code blocks in the <strong>Your Solution</strong> area."
+    );
+    return;
+  }
+
+  let allCorrect = true;
+  let firstWrong = null;
+
+  blocks.forEach((el, idx) => {
+    const expectedOrder = idx + 1; // 1-based in our data
+    const actualOrder = parseInt(el.dataset.order, 10);
+    if (actualOrder === expectedOrder) {
+      el.classList.add("correct");
+    } else {
+      el.classList.add("incorrect");
+      if (firstWrong == null) firstWrong = idx;
+      allCorrect = false;
+    }
+  });
+
+  if (!allCorrect) {
+    const tip =
+      id === 1
+        ? "Initialise your running total first; check multiples inside the loop; return at the end."
+        : "Use a set to remove duplicates, filter evens inside the loop, then sort at the end.";
+    setFeedback(
+      feedback,
+      "warning",
+      `Some lines are out of order. Focus on structure: ${tip}`
+    );
+    // Ensure the first incorrect is scrolled into view for usability
+    if (firstWrong != null && blocks[firstWrong]) {
+      blocks[firstWrong].scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    return;
+  }
+
+  // If all correct:
+  setFeedback(
+    feedback,
+    "success",
+    "Nice! Your function is correctly assembled. Read the explanation below, then try the inputs."
+  );
+  displayExplanation(id, blocks);
+  displayOutputPreview(id);
+  // Enable next/complete
+  if (id === 1) {
+    qs(selectors.next1).disabled = false;
+  } else {
+    qs(selectors.complete2).disabled = false;
+  }
+}
+
+function displayExplanation(id, solutionBlocks) {
+  const data = challenges.find((c) => c.id === id);
+  const explanation =
+    id === 1 ? qs(selectors.explanation1) : qs(selectors.explanation2);
+
+  const content = explanation.querySelector(".explanation-content");
+  content.innerHTML = "";
+
+  // Per-line explanation
+  solutionBlocks.forEach((el) => {
+    const code = el.querySelector("code")?.textContent || "";
+    const expl = el.dataset.explanation || "";
+    const item = document.createElement("div");
+    item.className = "mb-2";
+    item.innerHTML = `
+      <pre class="bg-body-tertiary p-2 rounded small mb-1"><code>${escapeHtml(
+        code
+      )}</code></pre>
+      <p class="mb-0">${escapeHtml(expl)}</p>
+    `;
+    content.appendChild(item);
+  });
+
+  // Overview
+  const overview = document.createElement("div");
+  overview.className = "mt-3";
+  overview.innerHTML = `
+    <strong>Function Overview:</strong>
+    <p class="mb-0">${escapeHtml(data.overview)}</p>
+  `;
+  content.appendChild(overview);
+
+  show(explanation);
+}
+
+function displayOutputPreview(id) {
+  if (id === 1) {
+    // Sum of Multiples
+    const n = parseInt(qs("#nInput").value, 10);
+    const k = parseInt(qs("#kInput").value, 10);
+    const outWrap = qs(selectors.output1);
+    const outText = qs(selectors.outputText1);
+
+    let preview = "";
+    if (Number.isNaN(n) || Number.isNaN(k)) {
+      preview = "Invalid input (please enter integers).";
+    } else if (n < 0 || k <= 0) {
+      preview = "None";
+    } else {
+      let total = 0;
+      const hits = [];
+      for (let i = 1; i <= n; i++) {
+        if (i % k === 0) {
+          total += i;
+          hits.push(i);
         }
+      }
+      preview =
+        hits.length > 0
+          ? `${hits.join(" + ")} = ${total}`
+          : `No multiples of ${k} in 1..${n} (sum = 0)`;
+    }
+
+    outText.textContent = preview;
+    show(outWrap);
+  } else {
+    // Unique Sorted Evens
+    const txt = qs("#numsInput").value ?? "";
+    const outWrap = qs(selectors.output2);
+    const outText = qs(selectors.outputText2);
+
+    // Parse comma-separated integers
+    const parts = txt.split(/[,\s]+/).filter(Boolean);
+    const nums = [];
+    for (const p of parts) {
+      const val = Number(p);
+      if (!Number.isNaN(val) && Number.isFinite(val)) {
+        nums.push(Math.trunc(val));
+      }
+    }
+    const evens = new Set();
+    nums.forEach((n) => {
+      if (n % 2 === 0) evens.add(n);
     });
-    
-    // Handle focus on name input
-    nameInput.addEventListener('focus', function() {
-        if (nameInput.value === 'Enter Name Here') {
-            nameInput.value = '';
-            nameInput.classList.remove('name-placeholder');
-        }
+    const result = Array.from(evens);
+    result.sort((a, b) => a - b);
+
+    outText.textContent = JSON.stringify(result);
+    show(outWrap);
+  }
+}
+
+function resetChallenge(id) {
+  initializeChallenge(id);
+}
+
+function showChallenge(id) {
+  // Toggle visibility
+  const c1 = qs(selectors.challenge1);
+  const c2 = qs(selectors.challenge2);
+  const completion = qs(selectors.completion);
+
+  hide(c1);
+  hide(c2);
+  hide(completion);
+
+  if (id === 1) {
+    c1.classList.remove("d-none");
+    c1.scrollIntoView({ behavior: "smooth", block: "start" });
+  } else if (id === 2) {
+    c2.classList.remove("d-none");
+    c2.scrollIntoView({ behavior: "smooth", block: "start" });
+  } else if (id === "complete") {
+    completion.classList.remove("d-none");
+    completion.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function completeAll() {
+  // Show summary
+  qs("#finalHintCount").textContent = hintCount.toString();
+  showChallenge("complete");
+}
+
+function restartAll() {
+  hintCount = 0;
+  const badge = qs(selectors.hintBadge);
+  if (badge) badge.textContent = "0 Hints";
+  initializeChallenge(1);
+  initializeChallenge(2);
+  showChallenge(1);
+}
+
+// ------------------------------
+// HTML escape
+// ------------------------------
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+// ------------------------------
+// Event wiring
+// ------------------------------
+function wireEvents() {
+  // Glossary links
+  qsa(selectors.termLinks).forEach((a) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const term = a.getAttribute("data-term");
+      const data = codingTerms[term];
+      if (!data) return;
+
+      // Fill modal content
+      qs(selectors.termModalLabel).textContent = data.title;
+      qs(selectors.termModalBody).textContent = data.definition;
+      qs(selectors.termModalExample).textContent = data.example;
+
+      const modalEl = qs(selectors.termModal);
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+      incrementHintCount();
     });
-    
-    // Handle blur on name input
-    nameInput.addEventListener('blur', function() {
-        if (nameInput.value.trim() === '') {
-            nameInput.value = 'Enter Name Here';
-            nameInput.classList.add('name-placeholder');
-        }
-    });
-    
-    // Update odd/even result when number changes
-    numberInput.addEventListener('input', function() {
-        const number = parseInt(numberInput.value) || 0;
-        const result = number % 2 === 0 ? 'Even' : 'Odd';
-        oddEvenResult.textContent = result;
-        outputText2.textContent = result;
-        
-        // Update the print block text if it exists in the DOM
-        const printBlock = document.querySelector('.code-block[data-order="6"]');
-        if (printBlock) {
-            // Get the div inside the code block if it exists
-            const contentDiv = printBlock.querySelector('div');
-            
-            // Create new formatted text
-            const newContent = `# Print the result\nresult = is_even(${number})\nprint(result)`;
-            
-            if (contentDiv) {
-                // Clear existing content
-                contentDiv.innerHTML = '';
-                
-                // Add new content with line breaks
-                newContent.split('\n').forEach((line, index, array) => {
-                    contentDiv.appendChild(document.createTextNode(line));
-                    if (index < array.length - 1) {
-                        contentDiv.appendChild(document.createElement('br'));
-                    }
-                });
-            }
-        }
-    });
-    
-    // Challenge data
-    const challenges = [
-        {
-            id: 1,
-            blocks: [
-                { text: 'def greet(name):', order: 1, explanation: 'This line defines a function named "greet" that takes one parameter called "name". The colon (:) indicates the start of the function body.' },
-                { text: '    greeting = "Hello, " + name + "!"', order: 2, explanation: 'This line creates a variable called "greeting" and assigns it a value that combines the string "Hello, " with the name parameter and an exclamation mark. The + operator joins strings together.' },
-                { text: '    print(greeting)', order: 3, explanation: 'This line prints the value of the "greeting" variable to the console. The print() function displays text to the user.' }
-            ]
-        },
-        {
-            id: 2,
-            blocks: [
-                { text: 'def is_even(n):', order: 1, explanation: 'This line defines a function named "is_even" that takes one parameter called "n". This parameter will be the number we want to check.' },
-                { text: '    if n % 2 == 0:', order: 2, explanation: 'This line checks if n is divisible by 2 with no remainder. The % symbol is the modulo operator that gives the remainder after division. If n % 2 equals 0, then n is an even number.' },
-                { text: '        return "Even"', order: 3, explanation: 'This line returns the string "Even" if the condition above is true (if n is divisible by 2). The indentation is important in Python to indicate this line belongs to the if statement.' },
-                { text: '    else:', order: 4, explanation: 'This line indicates what to do if the condition in the if statement is false (if n is not divisible by 2). In Python, the "else" keyword must be aligned with the "if" statement it belongs to.' },
-                { text: '        return "Odd"', order: 5, explanation: 'This line returns the string "Odd" if the number is not even. The indentation shows this line belongs to the else statement.' },
-                { text: '# Print the result\nresult = is_even(42)\nprint(result)', order: 6, explanation: 'These lines show how to use the is_even() function. First, we call the function with a number and store the result in a variable. Then, we print that result to see it on the screen.' }
-            ]
-        }
-    ];
+  });
 
-    // Coding terms and definitions
-    const codingTerms = {
-        'def': {
-            title: 'def - Function Definition',
-            definition: 'In Python, the <code>def</code> keyword is used to define a function. It tells the computer that you\'re creating a reusable block of code that can be called (executed) later by name.',
-            example: 'def say_hello():\n    print("Hello, world!")\n\n# Calling the function\nsay_hello()'
-        },
-        'variable': {
-            title: 'Variables - Storing Information',
-            definition: 'A variable is a named storage location that holds data in your program. Variables allow you to store and manipulate information throughout your code. You can think of variables like labeled containers that hold different types of data (text, numbers, etc.).',
-            example: '# Creating variables\nname = "Maria"\nage = 15\nis_student = True\n\n# Using variables\nprint("Hello, " + name)\nprint("In 5 years, you will be", age + 5)'
-        },
-        'return': {
-            title: 'return - Function Output',
-            definition: 'The <code>return</code> statement is used to exit a function and send back a value to the code that called the function. Once a return statement is executed, the function stops running immediately.',
-            example: 'def add_numbers(a, b):\n    sum = a + b\n    return sum\n\n# The returned value can be stored in a variable\nresult = add_numbers(5, 3)\nprint(result)  # Outputs: 8'
-        },
-        'print': {
-            title: 'print() - Displaying Output',
-            definition: 'The <code>print()</code> function in Python is used to display text or values to the screen or console. It\'s one of the most commonly used functions, especially when learning Python, as it allows you to see the results of your code.',
-            example: '# Basic printing\nprint("Hello, world!")\n\n# Printing variables\nname = "Alex"\nprint("Hello, " + name)\n\n# Printing multiple items\nage = 16\nprint("Name:", name, "Age:", age)'
-        },
-        'if-else': {
-            title: 'if/else Statements - Conditional Logic',
-            definition: 'Conditional statements let your code make decisions. An <code>if</code> statement checks if a condition is true and runs specific code if it is. An <code>else</code> statement provides alternative code to run when the condition is false.',
-            example: 'temperature = 75\n\nif temperature > 80:\n    print("It\'s hot outside!")\nelse:\n    print("It\'s not too hot today.")'
-        },
-        'indentation': {
-            title: 'Indentation - Code Block Structure',
-            definition: 'In Python, indentation (spaces at the beginning of a line) is crucial as it defines the structure of your code. It shows which lines belong to which code blocks like functions, loops, or conditional statements. Most languages use curly braces { } for this purpose, but Python uses indentation.',
-            example: 'def check_number(x):\n    if x > 0:\n        print("Positive")\n        if x > 10:\n            print("And greater than 10")\n    else:\n        print("Non-positive")'
-        },
-        'modulo': {
-            title: 'Modulo Operator (%) - Remainder Calculation',
-            definition: 'The modulo operator (%) calculates the remainder of a division operation. It\'s commonly used to check if a number is divisible by another number with no remainder, which is useful for determining if numbers are even or odd.',
-            example: '# Check if a number is even or odd\nnumber = 7\n\nif number % 2 == 0:\n    print("Even")\nelse:\n    print("Odd")\n\n# Using modulo to wrap around (e.g., clock time)\nhour = 13 % 12  # hour becomes 1'
-        }
-    };
+  // Challenge 1
+  qs(selectors.check1).addEventListener("click", () => checkAnswer(1));
+  qs(selectors.reset1).addEventListener("click", () => resetChallenge(1));
+  qs(selectors.next1).addEventListener("click", () => showChallenge(2));
 
-    // Initialize challenges
-    initializeChallenge(1);
-    initializeChallenge(2);
+  // Challenge 2
+  qs(selectors.prev2).addEventListener("click", () => showChallenge(1));
+  qs(selectors.check2).addEventListener("click", () => checkAnswer(2));
+  qs(selectors.reset2).addEventListener("click", () => resetChallenge(2));
+  qs(selectors.complete2).addEventListener("click", completeAll);
 
-    // Button event listeners
-    document.getElementById('checkBtn1').addEventListener('click', () => checkAnswer(1));
-    document.getElementById('checkBtn2').addEventListener('click', () => checkAnswer(2));
-    document.getElementById('resetBtn1').addEventListener('click', () => resetChallenge(1));
-    document.getElementById('resetBtn2').addEventListener('click', () => resetChallenge(2));
-    document.getElementById('nextBtn1').addEventListener('click', () => showChallenge(2));
-    document.getElementById('prevBtn2').addEventListener('click', () => showChallenge(1));
-    document.getElementById('completeBtn').addEventListener('click', completeChallenge);
-    document.getElementById('restartBtn').addEventListener('click', restartChallenges);
+  // Completion
+  qs(selectors.restartAll).addEventListener("click", restartAll);
 
-    // Set up term definition links
-    document.querySelectorAll('.term-link').forEach(link => {
-        link.addEventListener('click', function() {
-            const term = this.getAttribute('data-term');
-            showTermDefinition(term);
-        });
-    });
+  // Optional: live update preview after success if inputs change
+  const nInput = qs("#nInput");
+  const kInput = qs("#kInput");
+  if (nInput) nInput.addEventListener("input", () => displayOutputPreview(1));
+  if (kInput) kInput.addEventListener("input", () => displayOutputPreview(1));
+  const numsInput = qs("#numsInput");
+  if (numsInput) numsInput.addEventListener("input", () => displayOutputPreview(2));
+}
 
-    // Initialize a challenge
-    function initializeChallenge(challengeId) {
-        const challenge = challenges.find(c => c.id === challengeId);
-        const blockContainer = document.getElementById(`blockContainer${challengeId}`);
-        const solutionContainer = document.getElementById(`solutionContainer${challengeId}`);
-
-        // Clear containers
-        blockContainer.innerHTML = '';
-        solutionContainer.innerHTML = '';
-
-        // Shuffle and add blocks to the block container
-        const shuffledBlocks = [...challenge.blocks].sort(() => Math.random() - 0.5);
-        
-        shuffledBlocks.forEach(block => {
-            const blockElement = createBlockElement(block);
-            blockContainer.appendChild(blockElement);
-        });
-
-        // Initialize Sortable for both containers
-        new Sortable(blockContainer, {
-            group: `challenge${challengeId}`,
-            animation: 150,
-            ghostClass: 'sortable-ghost',
-            chosenClass: 'sortable-chosen'
-        });
-
-        new Sortable(solutionContainer, {
-            group: `challenge${challengeId}`,
-            animation: 150,
-            ghostClass: 'sortable-ghost',
-            chosenClass: 'sortable-chosen'
-        });
-    }
-
-    // Create a code block element
-    function createBlockElement(block) {
-        const blockElement = document.createElement('div');
-        blockElement.className = 'code-block';
-        blockElement.dataset.order = block.order;
-        blockElement.dataset.explanation = block.explanation;
-        
-        // Handle newlines in text content properly
-        if (block.text.includes('\n')) {
-            // Replace newlines with <br> tags for proper display
-            const formattedText = document.createElement('div');
-            block.text.split('\n').forEach((line, index, array) => {
-                formattedText.appendChild(document.createTextNode(line));
-                if (index < array.length - 1) {
-                    formattedText.appendChild(document.createElement('br'));
-                }
-            });
-            blockElement.appendChild(formattedText);
-        } else {
-            // No newlines, just set text content
-            blockElement.textContent = block.text;
-        }
-        
-        // Add info icon
-        const infoIcon = document.createElement('span');
-        infoIcon.className = 'block-info';
-        infoIcon.innerHTML = '<i class="far fa-question-circle"></i>';
-        infoIcon.title = 'Click for explanation';
-        infoIcon.addEventListener('click', function(e) {
-            e.stopPropagation();
-            showBlockExplanation(block.text, block.explanation);
-        });
-        
-        blockElement.appendChild(infoIcon);
-        
-        return blockElement;
-    }
-
-    // Show explanation for a single block
-    function showBlockExplanation(blockText, explanation) {
-        // Increment hint counter
-        incrementHintCount();
-        
-        // Create a modal for the explanation
-        const modal = document.createElement('div');
-        modal.className = 'modal fade';
-        modal.id = 'explanationModal';
-        modal.setAttribute('tabindex', '-1');
-        modal.setAttribute('aria-labelledby', 'explanationModalLabel');
-        modal.setAttribute('aria-hidden', 'true');
-        
-        modal.innerHTML = `
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="explanationModalLabel">Code Explanation</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="code-snippet bg-light p-2 mb-3 rounded">
-                            <code>${blockText}</code>
-                        </div>
-                        <p>${explanation}</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Show the modal
-        const bsModal = new bootstrap.Modal(modal);
-        bsModal.show();
-        
-        // Remove modal from DOM when hidden
-        modal.addEventListener('hidden.bs.modal', function () {
-            document.body.removeChild(modal);
-        });
-    }
-
-    // Show definition for a coding term
-    function showTermDefinition(term) {
-        // Increment hint counter
-        incrementHintCount();
-        
-        const termData = codingTerms[term];
-        const termModal = document.getElementById('termModal');
-        
-        if (termData) {
-            document.getElementById('termTitle').textContent = termData.title;
-            document.getElementById('termDefinition').innerHTML = termData.definition;
-            document.getElementById('termExample').textContent = termData.example;
-            
-            const bsModal = new bootstrap.Modal(termModal);
-            bsModal.show();
-        }
-    }
-    
-    // Increment hint counter
-    function incrementHintCount() {
-        hintCount++;
-        hintCountElement.textContent = hintCount;
-        finalHintCountElement.textContent = hintCount;
-    }
-
-    // Check the user's answer
-    function checkAnswer(challengeId) {
-        const challenge = challenges.find(c => c.id === challengeId);
-        const solutionContainer = document.getElementById(`solutionContainer${challengeId}`);
-        const feedbackElement = document.getElementById(`feedback${challengeId}`);
-        const explanationElement = document.getElementById(`explanation${challengeId}`);
-        const nextButton = document.getElementById(`nextBtn${challengeId}`);
-        
-        // Get all blocks in the solution container
-        const solutionBlocks = solutionContainer.querySelectorAll('.code-block');
-        
-        // Check if all blocks are in the solution container
-        if (solutionBlocks.length !== challenge.blocks.length) {
-            feedbackElement.className = 'feedback error';
-            feedbackElement.textContent = 'Please place all code blocks in the solution area.';
-            return;
-        }
-        
-        // Check if the order is correct
-        let isCorrect = true;
-        let blocksWithStatus = [];
-        
-        solutionBlocks.forEach((block, index) => {
-            const expectedOrder = index + 1;
-            const actualOrder = parseInt(block.dataset.order);
-            
-            block.classList.remove('correct', 'incorrect');
-            
-            if (actualOrder === expectedOrder) {
-                block.classList.add('correct');
-                blocksWithStatus.push({
-                    text: block.textContent,
-                    explanation: block.dataset.explanation,
-                    correct: true
-                });
-            } else {
-                block.classList.add('incorrect');
-                isCorrect = false;
-                blocksWithStatus.push({
-                    text: block.textContent,
-                    explanation: block.dataset.explanation,
-                    correct: false
-                });
-            }
-        });
-        
-        // Display feedback
-        if (isCorrect) {
-            feedbackElement.className = 'feedback success';
-            feedbackElement.textContent = 'Congratulations! Your solution is correct.';
-            solutionContainer.classList.add('pulse');
-            
-            // Enable next button
-            if (nextButton) {
-                nextButton.disabled = false;
-            }
-            
-            // Show full explanation
-            displayExplanation(challengeId, blocksWithStatus);
-            explanationElement.style.display = 'block';
-            
-            // Show the output display for the appropriate challenge
-            if (challengeId === 1) {
-                document.querySelector('.output-display').style.display = 'block';
-            } else if (challengeId === 2) {
-                document.getElementById('outputDisplay2').style.display = 'block';
-            }
-        } else {
-            feedbackElement.className = 'feedback error';
-            feedbackElement.textContent = 'Your solution is not quite right. Check the order of your blocks and try again.';
-            explanationElement.style.display = 'none';
-            
-            // Hide output displays
-            if (challengeId === 1) {
-                document.querySelector('.output-display').style.display = 'none';
-            } else if (challengeId === 2) {
-                document.getElementById('outputDisplay2').style.display = 'none';
-            }
-        }
-        
-        // Remove pulse animation after it completes
-        setTimeout(() => {
-            solutionContainer.classList.remove('pulse');
-        }, 500);
-    }
-
-    // Display the full explanation for the challenge
-    function displayExplanation(challengeId, blocksWithStatus) {
-        const explanationContent = document.querySelector(`#explanation${challengeId} .explanation-content`);
-        explanationContent.innerHTML = '';
-        
-        blocksWithStatus.forEach(block => {
-            const explanationItem = document.createElement('div');
-            explanationItem.className = 'explanation-item';
-            
-            const codeElement = document.createElement('div');
-            codeElement.className = 'code-snippet bg-light p-2 mb-2 rounded';
-            codeElement.innerHTML = `<code>${block.text}</code>`;
-            
-            const explanationText = document.createElement('p');
-            explanationText.textContent = block.explanation;
-            
-            explanationItem.appendChild(codeElement);
-            explanationItem.appendChild(explanationText);
-            explanationContent.appendChild(explanationItem);
-        });
-        
-        // Add a simple explanation of the entire function
-        const conclusionElement = document.createElement('div');
-        conclusionElement.className = 'mt-3 pt-3 border-top';
-        
-        if (challengeId === 1) {
-            conclusionElement.innerHTML = `
-                <h5>Function Overview:</h5>
-                <p>This <code>greet()</code> function takes a name as input and prints a personalized greeting. For example, if you call <code>greet("Maria")</code>, it will print <code>"Hello, Maria!"</code> to the console.</p>
-                <p>The function demonstrates how to define a function, manipulate strings, and print output in Python.</p>
-            `;
-        } else if (challengeId === 2) {
-            conclusionElement.innerHTML = `
-                <h5>Function Overview:</h5>
-                <p>This <code>is_even()</code> function determines if a number is even or odd. When you call <code>is_even(4)</code>, it returns <code>"Even"</code>, and when you call <code>is_even(7)</code>, it returns <code>"Odd"</code>.</p>
-                <p>This function demonstrates conditional logic (if/else statements) and the modulo operator (%) which finds the remainder after division.</p>
-                <p>Unlike the <code>greet()</code> function, this function returns a value instead of printing it directly. This allows the result to be stored in a variable first, which we can then print or use elsewhere in our code as shown in the example.</p>
-            `;
-        }
-        
-        explanationContent.appendChild(conclusionElement);
-    }
-
-    // Reset a challenge
-    function resetChallenge(challengeId) {
-        const feedbackElement = document.getElementById(`feedback${challengeId}`);
-        const explanationElement = document.getElementById(`explanation${challengeId}`);
-        const nextButton = document.getElementById(`nextBtn${challengeId}`);
-        
-        // Hide feedback and explanation
-        feedbackElement.className = 'feedback';
-        feedbackElement.textContent = '';
-        explanationElement.style.display = 'none';
-        
-        // Hide output displays
-        if (challengeId === 1) {
-            document.querySelector('.output-display').style.display = 'none';
-        } else if (challengeId === 2) {
-            document.getElementById('outputDisplay2').style.display = 'none';
-        }
-        
-        // Disable next button
-        if (nextButton) {
-            nextButton.disabled = true;
-        }
-        
-        // Reinitialize the challenge
-        initializeChallenge(challengeId);
-    }
-
-    // Show a specific challenge
-    function showChallenge(challengeId) {
-        // Hide all challenges
-        document.querySelectorAll('.challenge').forEach(challenge => {
-            challenge.classList.remove('active');
-        });
-        
-        // Show the selected challenge
-        document.getElementById(`challenge${challengeId}`).classList.add('active');
-    }
-
-    // Complete the challenges
-    function completeChallenge() {
-        // Update final hint count
-        finalHintCountElement.textContent = hintCount;
-        
-        // Hide all challenges
-        document.querySelectorAll('.challenge').forEach(challenge => {
-            challenge.classList.remove('active');
-        });
-        
-        // Show completion screen
-        document.getElementById('completion').classList.add('active');
-    }
-
-    // Restart all challenges
-    function restartChallenges() {
-        // Reset hint count
-        hintCount = 0;
-        hintCountElement.textContent = hintCount;
-        finalHintCountElement.textContent = hintCount;
-        
-        // Reset both challenges
-        resetChallenge(1);
-        resetChallenge(2);
-        
-        // Show the first challenge
-        showChallenge(1);
-    }
+// ------------------------------
+// Boot
+// ------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialise both challenges
+  initializeChallenge(1);
+  initializeChallenge(2);
+  // Show challenge 1 by default
+  showChallenge(1);
+  // Wire all events
+  wireEvents();
 });
